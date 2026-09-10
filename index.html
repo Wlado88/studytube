@@ -1,0 +1,211 @@
+<!doctype html>
+<html lang="ro">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
+  <meta name="theme-color" content="#08090c">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="StudyTube">
+  <link rel="manifest" href="./manifest.webmanifest">
+  <link rel="apple-touch-icon" href="./icons/icon-180.png">
+  <link rel="stylesheet" href="./style.css">
+  <title>StudyTube</title>
+</head>
+<body>
+  <div id="app">
+    <header class="topbar">
+      <button id="logoBtn" class="brandBtn" aria-label="Acasă">
+        <span class="logoMark">▶</span><span>StudyTube</span>
+      </button>
+      <button id="settingsTop" class="roundBtn" aria-label="Setări">⚙︎</button>
+    </header>
+
+    <main id="main">
+      <section id="view-home" class="view active">
+        <div class="sectionTitle">
+          <div><h1>Acasă</h1><p>Trending în România</p></div>
+          <button id="refreshHome" class="ghostBtn">↻</button>
+        </div>
+        <div id="homeStatus" class="status"></div>
+        <div id="homeGrid" class="videoGrid"></div>
+      </section>
+
+      <section id="view-search" class="view">
+        <div class="searchBar">
+          <input id="searchInput" autocomplete="off" autocapitalize="off" placeholder="Caută pe YouTube sau lipește un link">
+          <button id="searchGo" class="primaryBtn">Caută</button>
+        </div>
+        <div id="searchStatus" class="status"></div>
+        <div id="searchGrid" class="videoGrid"></div>
+      </section>
+
+      <section id="view-subs" class="view">
+        <div class="sectionTitle">
+          <div><h1>Abonamente</h1><p>Stocate local pe dispozitiv</p></div>
+        </div>
+        <div id="subsStatus" class="status"></div>
+        <div id="subsGrid" class="videoGrid"></div>
+      </section>
+
+      <section id="view-library" class="view">
+        <div class="libraryTabs">
+          <button class="chip active" data-library="history">Istoric</button>
+          <button class="chip" data-library="favorites">Favorite</button>
+        </div>
+        <div class="sectionTitle compact">
+          <div><h1 id="libraryTitle">Istoric</h1></div>
+          <button id="clearLibrary" class="dangerGhost">Șterge</button>
+        </div>
+        <div id="libraryGrid" class="videoGrid"></div>
+      </section>
+
+      <section id="view-watch" class="view watchView">
+        <div id="playerSticky" class="playerSticky">
+          <div id="playerBox" class="playerBox">
+            <video id="video" playsinline preload="metadata"></video>
+            <div id="gestureLayer" class="gestureLayer">
+              <div id="gestureHud" class="gestureHud"></div>
+              <div id="seekLeft" class="seekBubble">−10s</div>
+              <div id="seekRight" class="seekBubble">+10s</div>
+            </div>
+            <div id="playerUi" class="playerUi">
+              <div class="playerTop">
+                <button id="closePlayer" class="playerBtn">⌄</button>
+                <span id="qualityBadge" class="qualityBadge">Auto</span>
+              </div>
+              <button id="centerPlay" class="centerPlay">▶</button>
+              <div class="playerBottom">
+                <div class="timeRow"><span id="curTime">0:00</span><span id="duration">0:00</span></div>
+                <input id="scrubber" class="scrubber" type="range" min="0" max="1000" value="0">
+                <div class="controlRow">
+                  <button id="playPause" class="playerBtn">▶︎</button>
+                  <button id="back10" class="playerBtn">−10</button>
+                  <button id="fwd10" class="playerBtn">+10</button>
+                  <button id="speedBtn" class="playerBtn">1×</button>
+                  <button id="captionsBtn" class="playerBtn">CC</button>
+                  <button id="fullscreenBtn" class="playerBtn">⛶</button>
+                </div>
+              </div>
+            </div>
+            <div id="loadingOverlay" class="loadingOverlay hidden"><span class="spinner"></span><span id="loadingText">Se încarcă…</span></div>
+          </div>
+        </div>
+
+        <div class="watchContent">
+          <h1 id="videoTitle" class="videoTitleLarge"></h1>
+          <div id="videoMeta" class="videoMetaLarge"></div>
+
+          <div class="actionRow">
+            <button id="favoriteBtn" class="actionBtn">☆ Favorite</button>
+            <button id="shareBtn" class="actionBtn">↗ Share</button>
+            <button id="autoplayBtn" class="actionBtn active">Autoplay</button>
+          </div>
+
+          <div id="channelCard" class="channelCard">
+            <img id="channelAvatar" alt="">
+            <div class="channelInfo">
+              <strong id="channelName"></strong>
+              <span id="channelSubs"></span>
+            </div>
+            <button id="subscribeBtn" class="subscribeBtn">Abonează-te</button>
+          </div>
+
+          <details id="descriptionBox" class="descriptionBox">
+            <summary>Descriere</summary>
+            <div id="descriptionText"></div>
+          </details>
+
+          <section>
+            <div class="sectionTitle compact"><div><h2>Recomandate</h2></div></div>
+            <div id="relatedGrid" class="videoGrid"></div>
+          </section>
+
+          <section>
+            <div class="sectionTitle compact"><div><h2>Comentarii</h2></div></div>
+            <div id="commentsStatus" class="status"></div>
+            <div id="commentsList" class="commentsList"></div>
+          </section>
+        </div>
+      </section>
+    </main>
+
+    <nav class="bottomNav">
+      <button data-view="home" class="navBtn active"><span>⌂</span><small>Acasă</small></button>
+      <button data-view="search" class="navBtn"><span>⌕</span><small>Caută</small></button>
+      <button data-view="subs" class="navBtn"><span>▣</span><small>Abonamente</small></button>
+      <button data-view="library" class="navBtn"><span>▤</span><small>Bibliotecă</small></button>
+    </nav>
+  </div>
+
+  <dialog id="settingsDialog">
+    <div class="dialogCard">
+      <div class="dialogHead">
+        <div><h2>Setări</h2><p>Player și conexiune</p></div>
+        <button id="closeSettings" class="roundBtn">✕</button>
+      </div>
+
+      <label class="field">
+        <span>Instanță Invidious</span>
+        <select id="instanceSelect"></select>
+      </label>
+
+      <label class="field">
+        <span>Instanță custom</span>
+        <input id="customInstance" placeholder="https://invidious.example">
+      </label>
+
+      <div class="inlineRow">
+        <button id="testInstance" class="ghostBtn">Testează instanța</button>
+        <span id="instanceStatus" class="miniStatus"></span>
+      </div>
+
+      <label class="field">
+        <span>Calitate implicită</span>
+        <select id="qualitySelect">
+          <option value="auto">Auto</option>
+          <option value="hd720">720p</option>
+          <option value="medium">360/480p</option>
+          <option value="small">144/240p</option>
+        </select>
+      </label>
+
+      <label class="toggle"><input id="proxyToggle" type="checkbox" checked><span>Proxy video prin instanță (mai privat)</span></label>
+      <label class="toggle"><input id="sponsorToggle" type="checkbox" checked><span>SponsorBlock automat</span></label>
+      <label class="toggle"><input id="autoplayToggle" type="checkbox" checked><span>Autoplay video recomandat</span></label>
+      <label class="toggle"><input id="rememberToggle" type="checkbox" checked><span>Salvează istoricul local</span></label>
+
+      <div class="subSettings">
+        <strong>SponsorBlock</strong>
+        <label class="toggle small"><input class="sbCat" value="sponsor" type="checkbox" checked><span>Sponsor</span></label>
+        <label class="toggle small"><input class="sbCat" value="selfpromo" type="checkbox" checked><span>Self-promo</span></label>
+        <label class="toggle small"><input class="sbCat" value="interaction" type="checkbox" checked><span>Like/subscribe reminders</span></label>
+        <label class="toggle small"><input class="sbCat" value="intro" type="checkbox"><span>Intro</span></label>
+        <label class="toggle small"><input class="sbCat" value="outro" type="checkbox"><span>Outro</span></label>
+      </div>
+
+      <div class="notice">
+        StudyTube nu folosește playerul YouTube. Fluxurile video provin printr-o instanță Invidious. Instanțele publice se pot opri sau pot fi blocate; pentru stabilitate maximă poți introduce propria instanță.
+      </div>
+
+      <button id="saveSettings" class="primaryBtn wide">Salvează</button>
+    </div>
+  </dialog>
+
+  <dialog id="speedDialog">
+    <div class="miniDialog">
+      <h3>Viteză</h3>
+      <div id="speedOptions" class="optionGrid"></div>
+    </div>
+  </dialog>
+
+  <dialog id="captionsDialog">
+    <div class="miniDialog">
+      <h3>Subtitrări</h3>
+      <div id="captionOptions" class="optionList"></div>
+    </div>
+  </dialog>
+
+  <script src="./app.js"></script>
+</body>
+</html>
