@@ -16,15 +16,18 @@
   <div id="app">
     <header class="topbar">
       <button id="logoBtn" class="brandBtn" aria-label="Acasă">
-        <span class="logoMark">▶</span><span>StudyTube</span>
+        <span class="logoMark">▶</span><span>StudyTube <small class="vtag">v4</small></span>
       </button>
-      <button id="settingsTop" class="roundBtn" aria-label="Setări">⚙︎</button>
+      <div class="topActions">
+        <button id="googleTop" class="accountBtn" aria-label="Cont Google"><span id="googleTopText">Google</span><img id="googleTopAvatar" class="hidden" alt=""></button>
+        <button id="settingsTop" class="roundBtn" aria-label="Setări">⚙︎</button>
+      </div>
     </header>
 
     <main id="main">
       <section id="view-home" class="view active">
         <div class="sectionTitle">
-          <div><h1>Acasă</h1><p>Trending în România</p></div>
+          <div><h1>Acasă</h1><p id="homeSubtitle">Trending în România</p></div>
           <button id="refreshHome" class="ghostBtn">↻</button>
         </div>
         <div id="homeStatus" class="status"></div>
@@ -42,7 +45,7 @@
 
       <section id="view-subs" class="view">
         <div class="sectionTitle">
-          <div><h1>Abonamente</h1><p>Stocate local pe dispozitiv</p></div>
+          <div><h1>Abonamente</h1><p id="subsSubtitle">Locale sau sincronizate cu YouTube</p></div>
         </div>
         <div id="subsStatus" class="status"></div>
         <div id="subsGrid" class="videoGrid"></div>
@@ -50,8 +53,10 @@
 
       <section id="view-library" class="view">
         <div class="libraryTabs">
-          <button class="chip active" data-library="history">Istoric</button>
+          <button class="chip active" data-library="history">Istoric local</button>
           <button class="chip" data-library="favorites">Favorite</button>
+          <button class="chip" data-library="ytlikes">Apreciate YouTube</button>
+          <button class="chip" data-library="watchlater">Vezi mai târziu</button>
         </div>
         <div class="sectionTitle compact">
           <div><h1 id="libraryTitle">Istoric</h1></div>
@@ -63,7 +68,7 @@
       <section id="view-watch" class="view watchView">
         <div id="playerSticky" class="playerSticky">
           <div id="playerBox" class="playerBox">
-            <video id="video" playsinline preload="metadata"></video>
+            <video id="video" playsinline webkit-playsinline x-webkit-airplay="allow" preload="metadata"></video>
             <div id="gestureLayer" class="gestureLayer">
               <div id="gestureHud" class="gestureHud"></div>
               <div id="seekLeft" class="seekBubble">−10s</div>
@@ -72,7 +77,7 @@
             <div id="playerUi" class="playerUi">
               <div class="playerTop">
                 <button id="closePlayer" class="playerBtn">⌄</button>
-                <span id="qualityBadge" class="qualityBadge">Auto</span>
+                <button id="qualityBtn" class="qualityBadge playerBtn" aria-label="Calitate">Auto</button>
               </div>
               <button id="centerPlay" class="centerPlay">▶</button>
               <div class="playerBottom">
@@ -84,6 +89,7 @@
                   <button id="fwd10" class="playerBtn">+10</button>
                   <button id="speedBtn" class="playerBtn">1×</button>
                   <button id="captionsBtn" class="playerBtn">CC</button>
+                  <button id="pipBtn" class="playerBtn">PiP</button>
                   <button id="fullscreenBtn" class="playerBtn">⛶</button>
                 </div>
               </div>
@@ -98,6 +104,11 @@
 
           <div class="actionRow">
             <button id="favoriteBtn" class="actionBtn">☆ Favorite</button>
+            <button id="watchLaterBtn" class="actionBtn">＋ Mai târziu</button>
+            <button id="ytLikeBtn" class="actionBtn">♡ Like YouTube</button>
+            <button id="audioModeBtn" class="actionBtn">♫ Audio/BG</button>
+            <button id="downloadBtn" class="actionBtn">⇩ Download</button>
+            <button id="sleepBtn" class="actionBtn">☾ Sleep</button>
             <button id="shareBtn" class="actionBtn">↗ Share</button>
             <button id="autoplayBtn" class="actionBtn active">Autoplay</button>
           </div>
@@ -124,6 +135,10 @@
           <section>
             <div class="sectionTitle compact"><div><h2>Comentarii</h2></div></div>
             <div id="commentsStatus" class="status"></div>
+            <div id="commentComposer" class="commentComposer hidden">
+              <input id="commentInput" placeholder="Scrie un comentariu pe YouTube…" maxlength="10000">
+              <button id="sendCommentBtn" class="primaryBtn">Trimite</button>
+            </div>
             <div id="commentsList" class="commentsList"></div>
           </section>
         </div>
@@ -145,6 +160,23 @@
         <button id="closeSettings" class="roundBtn">✕</button>
       </div>
 
+      <section class="accountPanel">
+        <div class="accountRow">
+          <img id="accountAvatar" class="accountAvatar hidden" alt="">
+          <div class="accountText"><strong id="accountName">Cont YouTube neconectat</strong><span id="accountDetail">OAuth oficial Google / YouTube Data API</span></div>
+        </div>
+        <label class="field">
+          <span>Google OAuth Client ID</span>
+          <input id="googleClientId" autocomplete="off" placeholder="123456789-abc.apps.googleusercontent.com">
+        </label>
+        <div class="inlineRow wrap">
+          <button id="googleLoginBtn" class="googleBtn">Conectează Google</button>
+          <button id="googleLogoutBtn" class="ghostBtn hidden">Deconectează</button>
+          <button id="syncGoogleBtn" class="ghostBtn hidden">Sincronizează</button>
+        </div>
+        <div id="googleStatus" class="miniStatus">Client ID-ul nu este o parolă. Nu introduce niciodată Client Secret în PWA.</div>
+      </section>
+
       <label class="field">
         <span>Instanță Invidious</span>
         <select id="instanceSelect"></select>
@@ -155,25 +187,36 @@
         <input id="customInstance" placeholder="https://invidious.example">
       </label>
 
-      <div class="inlineRow">
+      <div class="inlineRow wrap">
         <button id="testInstance" class="ghostBtn">Testează instanța</button>
+        <button id="refreshInstances" class="ghostBtn">Actualizează lista</button>
         <span id="instanceStatus" class="miniStatus"></span>
       </div>
 
       <label class="field">
         <span>Calitate implicită</span>
         <select id="qualitySelect">
-          <option value="auto">Auto</option>
-          <option value="hd720">720p</option>
-          <option value="medium">360/480p</option>
-          <option value="small">144/240p</option>
+          <option value="auto">Auto adaptiv</option>
+          <option value="best">Cea mai bună</option>
+          <option value="2160">2160p / 4K</option>
+          <option value="1440">1440p</option>
+          <option value="1080">1080p</option>
+          <option value="720">720p</option>
+          <option value="480">480p</option>
+          <option value="360">360p</option>
+          <option value="240">240p</option>
+          <option value="144">144p</option>
         </select>
       </label>
 
       <label class="toggle"><input id="proxyToggle" type="checkbox" checked><span>Proxy video prin instanță (mai privat)</span></label>
+      <label class="toggle"><input id="adaptiveToggle" type="checkbox" checked><span>Preferă HLS/DASH adaptiv pentru 1080p–4K când este disponibil</span></label>
+      <label class="toggle"><input id="pipedToggle" type="checkbox" checked><span>Fallback Piped pentru stream dacă Invidious eșuează</span></label>
+      <label class="field"><span>Viteza la long-press</span><select id="holdSpeedSelect"><option value="2">2×</option><option value="2.5">2.5×</option><option value="3">3×</option><option value="4">4×</option></select></label>
       <label class="toggle"><input id="sponsorToggle" type="checkbox" checked><span>SponsorBlock automat</span></label>
       <label class="toggle"><input id="autoplayToggle" type="checkbox" checked><span>Autoplay video recomandat</span></label>
       <label class="toggle"><input id="rememberToggle" type="checkbox" checked><span>Salvează istoricul local</span></label>
+      <label class="toggle"><input id="preferGoogleToggle" type="checkbox" checked><span>Folosește YouTube Data API pentru Home/Search când sunt conectat</span></label>
 
       <div class="subSettings">
         <strong>SponsorBlock</strong>
@@ -185,7 +228,7 @@
       </div>
 
       <div class="notice">
-        StudyTube nu folosește playerul YouTube. Fluxurile video provin printr-o instanță Invidious. Instanțele publice se pot opri sau pot fi blocate; pentru stabilitate maximă poți introduce propria instanță.
+        Conectarea Google folosește OAuth oficial pentru datele contului (abonamente, playlisturi, like/comment). Redarea rămâne în playerul StudyTube prin backend alternativ. Asta NU îți acordă un abonament YouTube Premium și nu poate debloca streamurile Premium/DRM. Download-ul din StudyTube este pentru conținut pe care îl deții sau ai permisiunea să îl salvezi.
       </div>
 
       <button id="saveSettings" class="primaryBtn wide">Salvează</button>
@@ -206,6 +249,32 @@
     </div>
   </dialog>
 
+  <dialog id="sleepDialog">
+    <div class="miniDialog">
+      <h3>Sleep timer</h3>
+      <div id="sleepOptions" class="optionList"></div>
+    </div>
+  </dialog>
+
+
+  <dialog id="qualityDialog">
+    <div class="miniDialog">
+      <div class="dialogHead"><div><h3>Calitate video</h3><p id="qualityHint">Adaptive + progressive</p></div><button class="roundBtn" onclick="this.closest('dialog').close()">✕</button></div>
+      <div id="qualityOptions" class="optionList"></div>
+    </div>
+  </dialog>
+
+  <dialog id="downloadDialog">
+    <div class="miniDialog">
+      <div class="dialogHead"><div><h3>Download</h3><p>Doar pentru conținut pe care îl deții sau ai permisiunea să îl descarci.</p></div><button class="roundBtn" onclick="this.closest('dialog').close()">✕</button></div>
+      <div id="downloadStatus" class="status"></div>
+      <div id="downloadOptions" class="optionList"></div>
+      <div class="notice">Pe iPhone, un fișier cross-origin poate fi deschis într-un tab nou în loc să fie salvat direct. Folosește Share → Save to Files. StudyTube nu ocolește DRM.</div>
+    </div>
+  </dialog>
+
+  <script src="https://accounts.google.com/gsi/client" async defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/dashjs@5.2.2/dist/modern/umd/dash.all.min.js" defer></script>
   <script src="./app.js"></script>
 </body>
 </html>

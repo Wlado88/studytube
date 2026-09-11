@@ -1,88 +1,47 @@
-# StudyTube PWA v2
+# StudyTube PWA v4
 
-StudyTube este un PWA rapid, orientat spre iPhone, cu player HTML5 propriu.
+StudyTube v4 este o evoluție a v3 concentrată pe player și fiabilitate pe iPhone.
 
-## Funcții implementate
+## Nou în v4
 
-- Home / Trending România.
-- Căutare video.
-- Acceptă direct link YouTube / youtu.be / Shorts / Live.
-- Player HTML5 propriu, fără iframe YouTube.
-- Stream-uri prin Invidious.
-- Fallback automat între mai multe instanțe publice.
-- Instanță Invidious custom.
-- Mod `local=true` / proxy video prin Invidious.
-- SponsorBlock prin API cu k-anonymity hash.
-- Categorii SponsorBlock configurabile.
-- Double-tap stânga/dreapta: -10s / +10s.
-- Swipe orizontal: seek.
-- Long press: 2x temporar.
-- Play/pause, scrubber, playback speed, fullscreen.
-- Autoplay spre primul video recomandat.
-- Recomandări.
-- Comentarii YouTube read-only prin Invidious.
-- Subtitrări atunci când instanța oferă track-uri compatibile.
-- Abonamente locale.
-- Feed local de abonamente.
-- Istoric local.
-- Favorite locale.
-- Share către URL-ul original YouTube.
-- PWA installable pe Home Screen.
-- Shell offline prin Service Worker.
+- Player adaptiv: preferă HLS nativ pe Safari/iPhone și poate folosi MPEG-DASH prin dash.js 5.2.2 când backend-ul oferă manifest.
+- Opțiuni de calitate din player. 1080p/1440p/2160p depind de disponibilitatea DASH/HLS a backend-ului; fallback-ul progresiv este de obicei până la 720p.
+- Piped fallback pentru playback dacă Invidious nu oferă stream sau cade.
+- SponsorBlock automat (sponsor/selfpromo/interaction, intro/outro opționale).
+- Viteze 0.25×–4× și long-press configurabil la 2×/2.5×/3×/4×.
+- Media Session API: metadata și controale play/pause/seek din lock screen/Control Center unde WebKit permite.
+- Audio/Background mode: schimbă pe cel mai bun stream audio separat pentru cea mai bună șansă de redare în fundal pe iOS.
+- PiP cu detectare de suport; dacă PWA standalone este blocat de WebKit, oferă fallback către Safari.
+- Download pentru stream-uri progresive (audio+video) și audio separat, pentru conținut pe care îl deții sau ai permisiunea să îl descarci. Nu ocolește DRM.
+- Watch Later local real; nu mai pretinde sincronizare cu Watch Later YouTube (API-ul oficial nu îl expune util).
+- Google OAuth/YouTube Data API din v3 rămâne pentru subscriptions, likes și comments.
 
-## Ce NU poate face
+## Limitări reale iPhone
 
-Nu există integrare oficială cu contul Google/YouTube. Prin urmare versiunea aceasta nu oferă:
-- login Google;
-- sincronizare cu abonamentele/istoricul YouTube;
-- like/dislike pe contul YouTube;
-- postare comentarii;
-- upload;
-- purchases / DRM / YouTube Premium content;
-- live chat;
-- download offline al videoclipurilor.
+- PiP în Home Screen PWA poate fi blocat de anumite versiuni iOS/WebKit, chiar dacă funcționează în Safari.
+- Background audio este best-effort; iOS poate suspenda PWA-uri și evenimentele de autoplay/next-track în fundal.
+- 4K/1440p/1080p necesită un manifest adaptive valid și un backend care îl servește. Nu este același lucru cu 1080p Premium enhanced bitrate.
+- Public Invidious/Piped instances pot fi blocate sau rate-limited de YouTube. Pentru stabilitate maximă, self-hosting este superior.
+- Download-ul nu este pentru conținut DRM/licențiat și nu trebuie folosit pentru materiale pentru care nu ai permisiunea să păstrezi o copie.
 
-Aceste funcții ar necesita API-uri/autentificare oficială sau mecanisme neoficiale fragile.
+## Upgrade de la v3
 
-## Despre reclame
-
-StudyTube nu încarcă playerul oficial YouTube și nu solicită sloturile normale de ads din acel player.
-SponsorBlock este separat și sare peste segmente sponsor/self-promo/interaction etc. introduse în material.
-
-Nu există o garanție că mecanismul va rămâne permanent fără ads: YouTube și instanțele Invidious își pot schimba comportamentul, iar instanțele publice pot deveni indisponibile.
-
-## Instalare pe iPhone — 0 lei
-
-Ai nevoie de un URL HTTPS. Cea mai simplă variantă:
-
-### GitHub Pages
-1. Creează un repository nou.
-2. Pune conținutul acestui folder în rădăcina repo-ului.
-3. Settings -> Pages.
-4. Deploy from branch -> main / root.
-5. Deschide URL-ul Pages în Safari pe iPhone.
-6. Share -> Add to Home Screen.
-7. Lasă `Open as Web App` activ.
-
-### Cloudflare Pages
-Poți urca același folder ca site static.
-
-## Recomandare de stabilitate
-
-Instanțele publice Invidious se schimbă frecvent.
-Pentru utilizare zilnică serioasă, rulează o instanță Invidious proprie și introdu URL-ul ei în Settings -> Instanță custom.
-
-## Fișiere
+În repository-ul GitHub Pages înlocuiește:
 
 - index.html
-- style.css
 - app.js
+- style.css
 - manifest.webmanifest
 - sw.js
-- icons/
+- README.md
 
-## Licențiere / termeni
+Păstrează folderul icons/.
 
-Acesta este un client independent pentru uz personal/educațional.
-YouTube și mărcile asociate aparțin proprietarilor lor.
-Utilizarea unor front-end-uri/API-uri neoficiale poate fi afectată de termenii și modificările serviciului YouTube.
+După deploy, închide complet StudyTube și redeschide-l. Dacă vezi încă v3, Safari/PWA poate avea cache-ul vechi: deschide URL-ul GitHub Pages în Safari o dată, apoi redeschide aplicația.
+
+## Publicare în Wlado88/studytube
+
+- GitHub Pages publică automat din ramura `main`, rădăcina repository-ului.
+- Pictogramele trebuie să existe direct în `icons/`, la căile din manifest și service worker.
+- Service worker-ul se înregistrează la pornire, fără să aștepte API-urile video. Cache-ul este separat pentru această aplicație; actualizarea păstrează istoricul, favoritele, abonamentele și setările locale din v2/v3.
+- Conectarea Google necesită un OAuth Client ID configurat de proprietar în Setări și autorizat pentru originea site-ului. Nu include Client Secret sau tokenuri în fișierele publicate.

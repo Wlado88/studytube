@@ -97,3 +97,29 @@ dialog::backdrop{background:rgba(0,0,0,.72);backdrop-filter:blur(5px);-webkit-ba
 .emptyState{padding:26px 14px;text-align:center;color:var(--muted);border:1px dashed var(--line);border-radius:14px}
 @media (min-width:760px){.videoGrid{grid-template-columns:repeat(4,minmax(0,1fr))}.watchView{max-width:900px;margin:0 auto}.playerSticky{top:calc(56px + var(--safeTop));border-radius:16px;overflow:hidden}.watchContent{padding:16px 0}}
 @media (max-width:520px){#main{padding-left:10px;padding-right:10px}.videoGrid{grid-template-columns:1fr}.videoCard{display:grid;grid-template-columns:42% 1fr;gap:10px}.cardTitle{margin-top:2px}.thumbWrap{width:100%}.watchView .videoGrid .videoCard{display:grid}.watchView{margin-left:-10px;margin-right:-10px}.controlRow{gap:3px}.playerBtn{padding:7px 8px}.centerPlay{width:52px;height:52px}}
+
+/* StudyTube v3 */
+.vtag{font-size:10px;color:var(--muted);font-weight:700;vertical-align:middle}
+.topActions{display:flex;align-items:center;gap:7px}
+.accountBtn{height:38px;min-width:72px;border-radius:19px;background:var(--surface2);display:flex;align-items:center;justify-content:center;gap:6px;padding:4px 10px;font-size:12px;font-weight:700}
+.accountBtn img{width:28px;height:28px;border-radius:50%;object-fit:cover}.hidden{display:none!important}
+.accountPanel{display:grid;gap:12px;background:var(--surface2);border:1px solid var(--line);border-radius:16px;padding:12px}
+.accountRow{display:flex;align-items:center;gap:10px}.accountAvatar{width:44px;height:44px;border-radius:50%;object-fit:cover;background:var(--surface3)}
+.accountText{display:grid;gap:3px;min-width:0}.accountText strong{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.accountText span{font-size:12px;color:var(--muted)}
+.googleBtn{border-radius:12px;padding:10px 13px;background:#fff;color:#111;font-weight:750}.inlineRow.wrap{flex-wrap:wrap}
+.commentComposer{display:grid;grid-template-columns:1fr auto;gap:8px;margin:10px 0 16px}.commentComposer input{min-width:0}
+.playerBox.audioMode::after{content:"Audio mode";position:absolute;left:50%;top:34%;transform:translate(-50%,-50%);z-index:2;color:rgba(255,255,255,.55);font-size:18px;font-weight:800;letter-spacing:.02em}
+.actionBtn.enabled{background:var(--text);color:#08090c}
+.syncBadge{display:inline-flex;align-items:center;gap:5px;border:1px solid var(--line);border-radius:999px;padding:4px 8px;font-size:11px;color:var(--muted)}
+@media(max-width:520px){.accountBtn{min-width:38px;padding:4px}.accountBtn #googleTopText{display:none}.controlRow{overflow-x:auto}.playerBtn{flex:0 0 auto}}
+
+
+/* v4 player additions */
+.qualityBadge.playerBtn{border:0;color:#fff;min-width:58px;white-space:nowrap}
+.qualityOption,.downloadOption{display:grid;text-align:left;gap:3px;width:100%}
+.qualityOption small,.downloadOption small{color:var(--muted);font-size:11px;font-weight:500}
+.actionBtn.enabled{background:var(--text);color:#08090c}
+.playerBox.audioMode video{opacity:.12;filter:blur(2px)}
+.playerBox.audioMode::before{content:"♫ Background audio";position:absolute;z-index:2;left:50%;top:45%;transform:translate(-50%,-50%);font-weight:800;font-size:20px;color:#fff;pointer-events:none}
+#downloadDialog .miniDialog,#qualityDialog .miniDialog{max-height:75vh;overflow:auto}
+#qualityOptions,#downloadOptions{display:grid;gap:8px}
