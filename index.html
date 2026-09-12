@@ -2,7 +2,7 @@
 <html lang="ro">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
   <meta name="theme-color" content="#08090c">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -16,9 +16,10 @@
   <div id="app">
     <header class="topbar">
       <button id="logoBtn" class="brandBtn" aria-label="Acasă">
-        <span class="logoMark">▶</span><span>StudyTube <small class="vtag">v4</small></span>
+        <span class="logoMark">▶</span><span>StudyTube <small class="vtag">v4.5</small></span>
       </button>
       <div class="topActions">
+        <button id="openQueue" class="ghostBtn">Coada <span id="queueCount">0</span></button>
         <button id="googleTop" class="accountBtn" aria-label="Cont Google"><span id="googleTopText">Google</span><img id="googleTopAvatar" class="hidden" alt=""></button>
         <button id="settingsTop" class="roundBtn" aria-label="Setări">⚙︎</button>
       </div>
@@ -26,6 +27,12 @@
 
     <main id="main">
       <section id="view-home" class="view active">
+        <div class="localFilesPanel">
+          <button id="openLocalFiles" class="primaryBtn">Deschide video/audio din Fișiere</button>
+          <input id="localFilesInput" class="hidden" type="file" accept="video/*,audio/*,.mp4,.m4v,.mov,.webm,.m4a,.mp3,.ogg,.wav" multiple>
+          <p id="localFilesStatus" class="miniStatus"></p><div id="localFilesList"></div>
+        </div>
+
         <div class="sectionTitle">
           <div><h1>Acasă</h1><p id="homeSubtitle">Trending în România</p></div>
           <button id="refreshHome" class="ghostBtn">↻</button>
@@ -52,6 +59,7 @@
       </section>
 
       <section id="view-library" class="view">
+        <button id="preparedFiles" class="ghostBtn">Fișiere pregătite pe server</button>
         <div class="libraryTabs">
           <button class="chip active" data-library="history">Istoric local</button>
           <button class="chip" data-library="favorites">Favorite</button>
@@ -76,7 +84,7 @@
             </div>
             <div id="playerUi" class="playerUi">
               <div class="playerTop">
-                <button id="closePlayer" class="playerBtn">⌄</button>
+                <button id="closePlayer" class="playerBtn" aria-label="Minimizează playerul">⌄</button><button id="stopPlayer" class="playerBtn" aria-label="Închide și oprește playerul">✕</button>
                 <button id="qualityBtn" class="qualityBadge playerBtn" aria-label="Calitate">Auto</button>
               </div>
               <button id="centerPlay" class="centerPlay">▶</button>
@@ -96,13 +104,25 @@
             </div>
             <div id="loadingOverlay" class="loadingOverlay hidden"><span class="spinner"></span><span id="loadingText">Se încarcă…</span></div>
           </div>
+          <div class="miniControls">
+            <button id="miniExpand" aria-label="Extinde playerul"><span id="miniTitle">Video</span><small>Deschide playerul ↑</small></button>
+            <button id="miniPlay" aria-label="Redă">▶</button>
+            <button id="miniClose" aria-label="Închide și oprește playerul">✕</button>
+          </div>
         </div>
 
         <div class="watchContent">
+          <div id="playbackProblem" class="playbackProblem hidden" role="status">
+            <p id="playbackProblemText"></p>
+            <button id="retryPlayback" class="primaryBtn">Reîncearcă</button>
+            <button id="playbackSettings" class="ghostBtn">Setări conexiune</button>
+          </div>
           <h1 id="videoTitle" class="videoTitleLarge"></h1>
           <div id="videoMeta" class="videoMetaLarge"></div>
 
           <div class="actionRow">
+            <button id="queueCurrent" class="actionBtn">＋ La coadă</button>
+            <button id="nextQueued" class="actionBtn">Următorul din coadă</button>
             <button id="favoriteBtn" class="actionBtn">☆ Favorite</button>
             <button id="watchLaterBtn" class="actionBtn">＋ Mai târziu</button>
             <button id="ytLikeBtn" class="actionBtn">♡ Like YouTube</button>
@@ -112,6 +132,15 @@
             <button id="shareBtn" class="actionBtn">↗ Share</button>
             <button id="autoplayBtn" class="actionBtn active">Autoplay</button>
           </div>
+
+          <section class="studyTools">
+            <h2>Repere și repetare</h2>
+            <label class="toggle"><input id="repeatOne" type="checkbox"><span>Repetă videoclipul</span></label>
+            <div class="inlineRow wrap"><button id="markA" class="ghostBtn">Marchează A</button><button id="markB" class="ghostBtn">Marchează B</button><button id="clearLoop" class="ghostBtn">Oprește A–B</button></div>
+            <p id="loopStatus" class="miniStatus">A–B oprit</p>
+            <div class="inlineRow"><input id="bookmarkLabel" maxlength="100" placeholder="Numele reperului (opțional)" aria-label="Numele reperului"><button id="addBookmark" class="ghostBtn">＋ Reper aici</button></div>
+            <div id="bookmarkList"></div>
+          </section>
 
           <div id="channelCard" class="channelCard">
             <img id="channelAvatar" alt="">
@@ -177,6 +206,16 @@
         <div id="googleStatus" class="miniStatus">Client ID-ul nu este o parolă. Nu introduce niciodată Client Secret în PWA.</div>
       </section>
 
+      <section class="accountPanel">
+        <h3>Serviciul tău StudyTube</h3>
+        <p>Caută și pregătește MP4-uri complete. Prima pregătire poate dura câteva minute.</p>
+        <label class="field"><span>Adresa HTTPS a serviciului</span><input id="ownServer" type="url" placeholder="https://serviciul-tau.example" autocomplete="off"></label>
+        <label class="field"><span>Cheia serviciului</span><input id="ownServerToken" type="password" autocomplete="off"></label>
+        <p class="miniStatus">Cheia se păstrează numai în sesiunea acestui browser. Nu este parola Google.</p>
+        <button id="checkOwnServer" class="ghostBtn">Verifică conexiunea</button>
+        <p id="ownServerStatus" class="miniStatus"></p>
+      </section>
+
       <label class="field">
         <span>Instanță Invidious</span>
         <select id="instanceSelect"></select>
@@ -192,6 +231,12 @@
         <button id="refreshInstances" class="ghostBtn">Actualizează lista</button>
         <span id="instanceStatus" class="miniStatus"></span>
       </div>
+      <video id="connectionTestVideo" class="connectionTestVideo hidden" controls playsinline muted preload="metadata" aria-label="Test de redare a conexiunii"></video>
+
+      <label class="field">
+        <span>Server API Piped propriu (opțional)</span>
+        <input id="customPipedInstance" placeholder="https://api.example.com" autocomplete="off" inputmode="url">
+      </label>
 
       <label class="field">
         <span>Calitate implicită</span>
@@ -211,7 +256,7 @@
 
       <label class="toggle"><input id="proxyToggle" type="checkbox" checked><span>Proxy video prin instanță (mai privat)</span></label>
       <label class="toggle"><input id="adaptiveToggle" type="checkbox" checked><span>Preferă HLS/DASH adaptiv pentru 1080p–4K când este disponibil</span></label>
-      <label class="toggle"><input id="pipedToggle" type="checkbox" checked><span>Fallback Piped pentru stream dacă Invidious eșuează</span></label>
+      <label class="toggle"><input id="pipedToggle" type="checkbox" checked><span>Folosește Piped pentru catalog, căutare și redare când Invidious eșuează</span></label>
       <label class="field"><span>Viteza la long-press</span><select id="holdSpeedSelect"><option value="2">2×</option><option value="2.5">2.5×</option><option value="3">3×</option><option value="4">4×</option></select></label>
       <label class="toggle"><input id="sponsorToggle" type="checkbox" checked><span>SponsorBlock automat</span></label>
       <label class="toggle"><input id="autoplayToggle" type="checkbox" checked><span>Autoplay video recomandat</span></label>
@@ -234,6 +279,19 @@
       <button id="saveSettings" class="primaryBtn wide">Salvează</button>
     </div>
   </dialog>
+
+  <dialog id="queueDialog"><div class="dialogCard">
+    <div class="dialogHead"><h2>Coada de redare</h2><button id="closeQueue" class="roundBtn" aria-label="Închide coada">✕</button></div>
+    <div class="inlineRow"><input id="queueLink" placeholder="Link YouTube" aria-label="Link pentru coadă"><button id="addQueueLink" class="primaryBtn">Adaugă</button></div>
+    <p id="queueStatus" class="miniStatus"></p><div id="queueList"></div>
+    <p class="miniStatus">Clipurile din coadă au prioritate față de recomandări. Fișierele locale rămân disponibile numai în sesiunea curentă.</p>
+  </div></dialog>
+
+  <dialog id="preparedDialog"><div class="dialogCard">
+    <div class="dialogHead"><h2>Fișiere pe server</h2><button id="closePrepared" class="roundBtn" aria-label="Închide">✕</button></div>
+    <p>Disponibile temporar pe server. Pentru păstrare pe iPhone, salvează MP4-ul în Fișiere.</p>
+    <div id="preparedList"></div>
+  </div></dialog>
 
   <dialog id="speedDialog">
     <div class="miniDialog">

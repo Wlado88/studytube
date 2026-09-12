@@ -36,6 +36,8 @@ input,select{
 }
 input:focus,select:focus{border-color:rgba(255,49,88,.65)}
 .status{color:var(--muted);font-size:13px;min-height:0;margin:4px 2px 10px}
+.connectionTestVideo{display:block;width:100%;max-height:220px;background:#000;border-radius:12px;margin:12px 0}
+.connectionTestVideo.hidden{display:none}
 .videoGrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px 10px}
 .videoCard{background:none;text-align:left;padding:0;min-width:0}
 .thumbWrap{position:relative;aspect-ratio:16/9;border-radius:12px;overflow:hidden;background:var(--surface2)}
@@ -123,3 +125,38 @@ dialog::backdrop{background:rgba(0,0,0,.72);backdrop-filter:blur(5px);-webkit-ba
 .playerBox.audioMode::before{content:"♫ Background audio";position:absolute;z-index:2;left:50%;top:45%;transform:translate(-50%,-50%);font-weight:800;font-size:20px;color:#fff;pointer-events:none}
 #downloadDialog .miniDialog,#qualityDialog .miniDialog{max-height:75vh;overflow:auto}
 #qualityOptions,#downloadOptions{display:grid;gap:8px}
+.directCard{margin:0 0 24px;padding:20px;border:1px solid #68459b;background:#221931;border-radius:16px;line-height:1.5}.directCard p{color:#c8bed8;margin:8px 0 12px}.directCard a{color:#d5baff;font-weight:700}
+
+/* The same video element stays mounted and visible while browsing. */
+.miniControls{display:none}
+.hasMiniPlayer #main{padding-bottom:calc(176px + var(--safeBottom))}
+#view-watch.miniWatch{display:block;position:fixed;left:10px;right:10px;bottom:calc(70px + var(--safeBottom));margin:0;z-index:60;max-width:650px}
+.miniWatch .watchContent{display:none}
+.miniWatch .playerSticky{position:relative;top:auto;display:flex;align-items:center;border:1px solid #343642;border-radius:14px;overflow:hidden;box-shadow:0 8px 30px #0009;background:#171922}
+.miniWatch .playerBox{width:112px;min-width:112px;aspect-ratio:16/9}
+.miniWatch .playerUi,.miniWatch .loadingOverlay{display:none}
+.miniWatch .miniControls{display:flex;align-items:center;flex:1;min-width:0}
+.miniControls button{background:transparent;color:#fff;border:0;min-width:44px;min-height:64px;padding:8px;font:inherit}
+#miniExpand{flex:1;min-width:0;text-align:left}
+#miniTitle{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:13px;font-weight:700}
+#miniExpand small{display:block;color:#a9adbc;font-size:11px;margin-top:5px}
+.playbackProblem{padding:14px;border:1px solid #ad536b;border-radius:12px;background:#27171e;margin-bottom:14px}
+.playbackProblem.hidden{display:none}
+.gestureLayer{touch-action:none}
+.loadingOverlay{pointer-events:none}
+@media(min-width:700px){#view-watch.miniWatch{left:auto;width:430px;right:20px}}
+
+.playerUi{pointer-events:none}
+.playerUi button,.playerUi input{pointer-events:auto}
+.playerUi.hiddenUi button,.playerUi.hiddenUi input{pointer-events:none}
+
+.preparedRow{padding:14px 0;border-bottom:1px solid var(--line)}.preparedRow button{margin:4px}
+
+.localFilesPanel,.studyTools{padding:14px;border:1px solid var(--line);border-radius:14px;margin-bottom:18px}
+.queueRow{display:flex;align-items:center;gap:6px;padding:8px 0;border-bottom:1px solid var(--line);overflow-wrap:anywhere}
+.queueRow>span,.queueRow>button:first-child{flex:1;min-width:0;text-align:left}
+.queueRow button{min-height:44px;white-space:normal}
+.cardWithQueue{min-width:0}.cardWithQueue .videoCard{width:100%}.queueCardBtn{background:transparent;color:var(--muted);padding:8px;font-size:12px;min-height:40px}
+.studyTools h2{font-size:17px}.studyTools input[type=text],#bookmarkLabel,#queueLink{min-width:0;flex:1}
+button:disabled{opacity:.45;cursor:default}.topActions{gap:4px}
+@media(max-width:430px){.brandBtn{font-size:17px}.topActions .ghostBtn{padding:7px;font-size:12px}}

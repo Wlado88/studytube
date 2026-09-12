@@ -1,0 +1,103 @@
+StudyTube v4.5 — 12 septembrie 2026
+
+JavaScript: 72/72, API/DOM/media simulate.
+Backend: 9/9, HTTP + FFmpeg reale, extractor YouTube înlocuit cu fixture.
+Sintaxă JavaScript, manifest JSON, ID-uri și active statice: valide.
+
+Nu au fost verificate: browser real/iPhone, sursă YouTube reală funcțională, imagine Docker, publicare GitHub Pages, găzduire.
+
+✔ queue rejects invalid IDs, deduplicates, reorders and persists only reusable YouTube entries (17.792536ms)
+✔ queue consumes one item during overlapping ended events and takes precedence over related autoplay (22.042863ms)
+✔ queue clears the advancement lock when a play call throws synchronously (3.184073ms)
+✔ sleep at end has priority over repeat and queue, then repeat keeps the queue intact (14.812034ms)
+✔ A–B validates boundaries and loops only the current playing video (4.386202ms)
+✔ A–B selection suspends SponsorBlock skipping until the loop is cleared (3.813751ms)
+✔ bookmark labels are text, near duplicates are ignored, seeking and deleting work (3.561736ms)
+✔ restored bookmarks discard invalid timestamps and unknown video identifiers (2.410445ms)
+✔ local imports reject empty and unsupported files, open the first and queue the remainder without network (5.963798ms)
+✔ local source survives minimizing and expanding, then is revoked on replacement and close (8.66121ms)
+✔ a local media error offers a retry without querying public video sources (3.758278ms)
+✔ local bookmarks and position stay out of persistent YouTube history (3.211615ms)
+✔ sleep deadline stops resumed playback before A–B or queue can keep it playing (2.641641ms)
+✔ registry discovery survives reopening settings and reloading the app (7.583235ms)
+✔ known disabled public APIs are skipped without claiming the sites are offline (4.053108ms)
+✔ fallback retains the custom server and other user settings (4.144488ms)
+✔ malformed JSON catalog is rejected before trying the next server (3.458344ms)
+✔ Piped loads Home and Search when Invidious is unavailable (4.737061ms)
+✔ disabling Piped suppresses its requests (4.151746ms)
+✔ a Google error does not prevent configured catalog fallback (4.004536ms)
+✔ out-of-order Home responses cannot overwrite newer results (4.333743ms)
+✔ server URL validation does not save invalid input (6.112847ms)
+✔ metadata and a play promise alone cannot report successful playback (23.345297ms)
+✔ a manual seek cannot masquerade as playback progress (23.981182ms)
+✔ playback succeeds after media events demonstrate time progression (3.442ms)
+✔ unsupported media and autoplay rejection cannot report success (3.658328ms)
+✔ cancelling a media test stops playback immediately (3.316773ms)
+✔ instance test requests catalog and video details, then awaits playback (4.782647ms)
+✔ closing settings aborts the in-flight test without trying another endpoint (3.977577ms)
+✔ minimizing and switching all tabs preserves the exact playing media element and DASH engine (2.777642ms)
+✔ expanding the same video never reloads the source (2.335646ms)
+✔ close actually releases playback and invalidates pending requests (2.369554ms)
+✔ a late first video cannot overwrite a newer selection (3.152926ms)
+✔ closing during resolution cannot resurrect the player (2.810945ms)
+✔ a stale failover cannot replace another video source (2.144231ms)
+✔ vertical gesture minimizes without pausing and touch cancellation restores speed (3.115434ms)
+✔ source cancellation does not autoplay or restore old time into a replacement (3.153576ms)
+✔ YouTube links reject spoofed hosts and truncated IDs (2.311664ms)
+✔ own server catalog is prioritized without silently falling back to public instances (2.850625ms)
+✔ own server key is required before making a request (2.627005ms)
+✔ ready job yields a complete MP4 source and preserves actual resolution (3.518029ms)
+✔ mismatched own-server video cannot be installed (2.592598ms)
+✔ late own-server resolution is ignored after closing (2.522876ms)
+✔ own-server errors cannot trigger a public media fallback (2.377407ms)
+✔ accepts YouTube watch/short/share URLs, rejects lookalike sites and invalid IDs (3.240336ms)
+✔ corrupt stored preferences and bookmarks are bounded (1.602485ms)
+✔ rejects malformed, reversed and non-skip sponsor segments (0.508046ms)
+✔ segment boundaries respect duration and the undone segment (0.351027ms)
+✔ ad skip requires an active ad marker, never seeks an unbounded stream (0.350497ms)
+✔ a segmented blob or encrypted source is not offered as a complete download (0.376165ms)
+✔ playback diagnostic requires real time progression, not a seek or metadata alone (0.627566ms)
+✔ mounts once on YouTube and uses only the SponsorBlock hash-prefix API (34.691329ms)
+✔ an ad-looking button cannot skip ordinary content; ad mute is restored afterward (3.405983ms)
+✔ existing user mute is preserved, and turning ad skipping off releases its changes (3.214222ms)
+✔ native video speed and PiP are invoked from the controls (7.394595ms)
+✔ SponsorBlock skips the selected clip and Undo prevents an immediate repeat (17.286154ms)
+✔ A–B loop takes precedence over automatic segment skipping (2.275548ms)
+✔ navigation never applies new segments to the previous video before its source changes (2.416682ms)
+✔ SponsorBlock failures leave YouTube playback untouched (2.140869ms)
+✔ a late SponsorBlock response cannot overwrite segments after navigation (1.629758ms)
+✔ sleep deadline is enforced when a suspended page resumes (1.054238ms)
+✔ disposal removes the interface, listeners and ad mute without changing normal playback (0.571142ms)
+✔ install precaches all ten scoped assets and then activates (14.622567ms)
+✔ failed shell installation never replaces the active worker (3.657931ms)
+✔ activation removes old StudyTube caches and preserves other apps (5.747472ms)
+✔ online shell requests prefer fresh deployed bytes (9.259622ms)
+✔ offline navigation and JS return their own cached content (5.696805ms)
+✔ video, API, other site, cross-origin and non-GET requests bypass cache (4.250783ms)
+✔ cache quota failures do not block online use (2.889741ms)
+✔ PWA registration happens even while the video API is stalled (5.341953ms)
+✔ opening the userscript as a document cannot poison the cached home page (8.411394ms)
+✔ offline install guide and userscript return the correct files (11.508054ms)
+ℹ tests 72
+ℹ suites 0
+ℹ pass 72
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 584.557487
+
+test_auth_and_exact_cors (test_server.ServiceTests.test_auth_and_exact_cors) ... ok
+test_failures_are_terminal_and_do_not_expose_upstream_details (test_server.ServiceTests.test_failures_are_terminal_and_do_not_expose_upstream_details) ... ok
+test_full_file_ranges_head_and_download (test_server.ServiceTests.test_full_file_ranges_head_and_download) ... ok
+test_real_mp4_remux_and_decode (test_server.ServiceTests.test_real_mp4_remux_and_decode) ... ok
+test_reuse_delete_and_no_server_path_in_api (test_server.ServiceTests.test_reuse_delete_and_no_server_path_in_api) ... ok
+test_static_app_health_and_unsupported_methods (test_server.ServiceTests.test_static_app_health_and_unsupported_methods) ... ok
+test_tickets_expiry_and_traversal (test_server.ServiceTests.test_tickets_expiry_and_traversal) ... ok
+test_unsatisfiable_ranges (test_server.ServiceTests.test_unsatisfiable_ranges) ... ok
+test_validation_and_no_arbitrary_url_or_command (test_server.ServiceTests.test_validation_and_no_arbitrary_url_or_command) ... ok
+
+----------------------------------------------------------------------
+Ran 9 tests in 8.172s
+
+OK

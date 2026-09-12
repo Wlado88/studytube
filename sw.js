@@ -1,8 +1,8 @@
 "use strict";
 
 const CACHE_PREFIX = `studytube-shell:${self.registration.scope}:`;
-const CACHE = `${CACHE_PREFIX}v4`;
-const SHELL = ["./", "./index.html", "./style.css", "./app.js", "./manifest.webmanifest", "./icons/icon-180.png", "./icons/icon-192.png", "./icons/icon-512.png"];
+const CACHE = `${CACHE_PREFIX}v4.5`;
+const SHELL = ["./", "./index.html", "./style.css", "./app.js", "./manifest.webmanifest", "./icons/icon-180.png", "./icons/icon-192.png", "./icons/icon-512.png", "./direct/index.html", "./direct/StudyTube-Direct.user.js"];
 const SHELL_URLS = new Set(SHELL.map(path => new URL(path, self.registration.scope).href));
 const INDEX_URL = new URL("./index.html", self.registration.scope).href;
 
@@ -39,7 +39,13 @@ self.addEventListener("fetch", event => {
   // Only application assets are cached; never video streams or API responses.
   event.respondWith((async () => {
     const cache = await caches.open(CACHE);
-    const cacheKey = isNavigation ? INDEX_URL : assetUrl.href;
+    const directUrl = new URL("./direct/index.html", self.registration.scope).href;
+    const directPath = new URL("./direct/", self.registration.scope).pathname;
+    let cacheKey = assetUrl.href;
+    if (isNavigation) {
+      if (url.pathname===directPath||url.pathname===directPath+"index.html") cacheKey=directUrl;
+      else if (!SHELL_URLS.has(assetUrl.href)||assetUrl.href===self.registration.scope) cacheKey=INDEX_URL;
+    }
     try {
       const response = await fetch(request);
       if (response.ok && response.type !== "opaque" && !response.redirected) {
