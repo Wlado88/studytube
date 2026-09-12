@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="ro">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#101017">
+  <title>StudyTube Direct — instalare pe iPhone</title>
+  <link rel="icon" href="../icons/icon-192.png">
+  <style>
+    :root{color-scheme:dark;font-family:system-ui,-apple-system,BlinkMacSystemFont,sans-serif;background:#101017;color:#f5f1ff;line-height:1.6}*{box-sizing:border-box}body{margin:0;padding:24px 20px calc(40px + env(safe-area-inset-bottom,0px))}main{max-width:760px;margin:auto}header{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:8px 0 32px}.brand{font-weight:800;text-decoration:none;color:#fff}.brand span{display:inline-grid;place-items:center;background:#794bd5;border-radius:12px;width:38px;height:38px;margin-right:10px}a{color:#c8aeff}a:focus-visible{outline:3px solid #c8aeff;outline-offset:4px}h1{font-size:clamp(32px,8vw,52px);line-height:1.1;letter-spacing:-1.5px;margin:16px 0}h2{font-size:24px;line-height:1.25;margin:0 0 8px}h3{margin:0;font-size:19px}p{margin:10px 0;color:#c6c0d4}.badge{display:inline-block;border:1px solid #654990;border-radius:999px;padding:4px 12px;color:#ddc9ff;font-size:13px}.lead{font-size:19px;max-width:650px}.card{background:#1b1924;border:1px solid #363040;border-radius:20px;padding:22px;margin:20px 0}.steps{list-style:none;padding:0;counter-reset:step}.steps>li{counter-increment:step;position:relative;border-top:1px solid #3a3247;padding:20px 0 20px 48px}.steps>li:first-child{border-top:0}.steps>li:before{content:counter(step);position:absolute;left:0;top:22px;background:#483268;color:#fff;border-radius:50%;width:32px;height:32px;display:grid;place-items:center;font-weight:800}.button{display:inline-block;text-decoration:none;background:#8355dd;border:1px solid #bb95ff;border-radius:12px;color:white;font-weight:700;padding:12px 18px;min-height:46px;margin:8px 0}.secondary{background:transparent;border-color:#65557e}.features{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:24px 0}.feature{border:1px solid #3d334e;border-radius:14px;padding:14px}.feature p{font-size:14px;margin-bottom:0}details{border-top:1px solid #3a3247;padding-top:16px;margin-top:16px}summary{cursor:pointer;font-weight:700;min-height:40px}.note{font-size:14px}.small{font-size:13px}footer{margin-top:28px;font-size:13px;color:#aaa0bb}@media(max-width:450px){.card{padding:18px}.features{grid-template-columns:1fr}.steps>li{padding-left:42px}header{align-items:flex-start}}
+  </style>
+</head>
+<body>
+<main>
+  <header><a class="brand" href="../"><span>▶</span>StudyTube</a><a href="../">Player PWA</a></header>
+  <span class="badge">StudyTube Direct 1.0 · test pe iPhone necesar</span>
+  <h1>YouTube, cu comenzile tale de studiu.</h1>
+  <p class="lead">Rulează direct pe pagina YouTube din Safari. Videoclipurile, căutarea și contul sunt cele ale YouTube; comenzile StudyTube apar într-un buton <strong>ST</strong>.</p>
+  <p>Acest mod folosește extensia Userscripts. Nu are nevoie de o instanță Invidious sau Piped și nu cere un Google Client ID.</p>
+
+  <section class="card" aria-labelledby="install-title">
+    <h2 id="install-title">Instalare pe iPhone</h2>
+    <ol class="steps">
+      <li><h3>Instalează Userscripts</h3><p>Deschide aplicația după instalare. Verifică dosarul în care salvează scripturile; dacă nu este ales, selectează un dosar din Fișiere.</p><a class="button" href="https://apps.apple.com/app/userscripts/id1463298887">Userscripts în App Store</a></li>
+      <li><h3>Activează extensia în Safari</h3><p>În meniul paginii din Safari, deschide gestionarea extensiilor și activează <strong>Userscripts</strong>. Permite accesul pentru pagina de instalare și pentru YouTube când Safari îl solicită.</p></li>
+      <li><h3>Instalează StudyTube Direct</h3><p>Apasă butonul de mai jos. Se va deschide fișierul cu cod. Din meniul extensiilor Safari, deschide <strong>Userscripts</strong> și alege instalarea scriptului.</p><a class="button" href="./StudyTube-Direct.user.js">Deschide scriptul pentru instalare</a><details><summary>Dacă nu apare opțiunea de instalare</summary><p>Salvează fișierul <a href="./StudyTube-Direct.user.js" download>StudyTube-Direct.user.js</a> în dosarul ales în aplicația Userscripts. Apoi deschide o dată meniul extensiei Userscripts în Safari și reîncarcă YouTube.</p></details></li>
+      <li><h3>Deschide YouTube în Safari</h3><p>Pornește un videoclip și apasă butonul mov <strong>ST</strong>. Pentru Picture-in-Picture, apasă <strong>PiP / Fundal</strong>.</p><a class="button secondary" href="https://m.youtube.com/">Deschide YouTube</a></li>
+    </ol>
+  </section>
+
+  <section aria-labelledby="features-title">
+    <h2 id="features-title">Ce adaugă scriptul</h2>
+    <div class="features">
+      <div class="feature"><strong>Comenzi de studiu</strong><p>Viteză 0,25×–4×, salt ±10 secunde, apăsare pentru 2×, buclă A–B și repere salvate.</p></div>
+      <div class="feature"><strong>SponsorBlock</strong><p>Omite segmentele găsite de comunitate și îți permite să anulezi ultimul salt.</p></div>
+      <div class="feature"><strong>Reclame detectate</strong><p>Ascunde elementele publicitare cunoscute și încearcă omiterea reclamelor identificate de player. Eficiența pe YouTube trebuie verificată pe telefon.</p></div>
+      <div class="feature"><strong>PiP și temporizator</strong><p>Folosește PiP dacă Safari îl oferă. Temporizatorul oprește redarea; suspendarea paginii de către iOS poate întârzia oprirea.</p></div>
+    </div>
+  </section>
+
+  <section class="card" aria-labelledby="check-title">
+    <h2 id="check-title">Verifică pe telefon</h2>
+    <p>Pornește un clip și lasă-l să ruleze câteva secunde. În panoul ST, <strong>Stare și limite</strong> trebuie să arate progres observat. Apoi activează PiP și treci într-o altă aplicație pentru a verifica imaginea și sunetul.</p>
+    <p class="note">Testele automate ale codului nu confirmă redarea pe iPhone. Scriptul nu este o aplicație iOS nativă, nu garantează eliminarea fiecărei reclame și nu implementează descărcări offline complete sau drepturile unui abonament Premium. Butonul pentru fișier video funcționează numai dacă playerul expune un fișier direct compatibil.</p>
+    <p class="note">Contul Google se folosește în pagina YouTube. Scriptul nu îți cere parola. SponsorBlock primește un prefix al amprentei ID-ului video pentru identificarea segmentelor; poți opri această funcție din ST.</p>
+  </section>
+  <footer>Documentație: <a href="https://github.com/quoid/userscripts#usage">Userscripts</a> · <a href="https://wiki.sponsor.ajay.app/w/API_Docs">SponsorBlock</a> · <a href="https://github.com/Wlado88/studytube">Codul StudyTube</a></footer>
+</main>
+</body>
+</html>
